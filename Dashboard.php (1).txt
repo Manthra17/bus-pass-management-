@@ -1,0 +1,40 @@
+<?php
+include('db.php');
+session_start();
+
+if (!isset($_SESSION['user_id'])) {
+header("Location: login.php");
+exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+$pass_type = $_POST['pass_type'];
+$start_date = $_POST['start_date'];
+$end_date = $_POST['end_date'];
+$user_id = $_SESSION['user_id'];
+
+$sql = "INSERT INTO passes (user_id, pass_type, start_date, end_date) VALUES ('$user_id', '$pass_type', '$start_date', '$end_date')";
+
+if ($conn->query($sql) === TRUE) {
+echo "Pass applied successfully!";
+} else {
+echo "Error: " . $sql . "<br>" . $conn->error;
+}
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dashboard</title>
+</head>
+<body>
+<h1>Welcome to the Bus Pass Management System</h1>
+<form method="post" action="">
+Pass Type: <input type="text" name="pass_type" required><br>
+Start Date: <input type="date" name="start_date" required><br>
+End Date: <input type="date" name="end_date" required><br>
+<input type="submit" value="Apply for Pass">
+</form>
+</body>
+</html>
